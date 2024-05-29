@@ -1,0 +1,263 @@
+import React, { useState } from 'react'
+import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import './switch.css'
+
+const NewSwitch = ({ initialState = false, onChange }) => {
+
+
+  // const [switchState, setSwitchState] = useState(false);
+  // const handleChange =(e)=>{
+  //   // setField('gtc', e.target.checked)
+  //   setSwitchState(!switchState)
+  //   console.log(switchState)
+  // }
+  // return (
+  //   <div>
+  //       <BootstrapSwitchButton defaultChecked={switchState} size="xs" onChange={handleChange} className="from-control"/>
+  //   </div>
+  // )
+  const [isChecked, setIsChecked] = useState(initialState);
+
+  const toggleSwitch = () => {
+    const newState = !isChecked;
+    setIsChecked(newState);
+    if (onChange) {
+      onChange(newState);
+    }
+  };
+
+  return (
+    <div className="custom-switch" onClick={toggleSwitch}>
+      <input type="checkbox" className="switch-checkbox" checked={isChecked} readOnly />
+      <div className="cswitch-handle"></div>
+    </div>
+  );
+
+}
+
+export default NewSwitch
+
+
+import React, { useState } from 'react'
+import Sidebbar from '../components/sidebar/Sidebbar'
+import Header from '../components/header/Header'
+import { DatePicker, Space } from 'antd';
+import Switch from '../components/component/Switch';
+import { Link } from 'react-router-dom';
+const { RangePicker } = DatePicker;
+import Pagination from '../components/component/Pagination'
+import viewimg from '../assets/icons/view.svg'
+import editimg from '../assets/icons/edit.svg'
+import deleteimg from '../assets/icons/delete.png'
+import bannerimg  from '../assets/icons/banner-img.png'
+import NewSwitch from '../components/component/NewSwitch';
+import Swal from 'sweetalert2';
+import questionimg from '../assets/icons/question.png'
+import Footer from '../components/footer/Footer';
+
+const tableData = [
+  {
+      banerimg:`${bannerimg}`,
+      title:"Entertainment",
+      purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+  {
+        banerimg:`${bannerimg}`,
+        title:"Entertainment",
+        purpose:"Advertising",
+    },
+    {
+      banerimg:`${bannerimg}`,
+      title:"Entertainment",
+      purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+  {
+    banerimg:`${bannerimg}`,
+    title:"Entertainment",
+    purpose:"Advertising",
+  },
+
+  
+  
+]
+
+const Banners = () => {
+  const[switchval,setSwitchval] = useState(false)
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleSwitchChange = (checked) => {
+    setIsChecked(checked);
+    // Do something with the new state...
+  };
+
+  const handleDelete = ()=>{
+    Swal.fire({          
+        iconHtml: `<img src=${questionimg}>`,
+        text: 'Are you sure you want to Remove this table?',        
+        showCancelButton: true,  
+        confirmButtonColor: 'transparent',  
+        cancelButtonColor: '#287383',  
+        confirmButtonText: 'Yes!'  
+      });   
+  }
+
+  return (
+      <>
+        <Sidebbar/>
+        <div className='bannerdash'>
+          <div>
+              <Header props="Banner"/>                       
+          </div>
+          <div className='daterange'>
+              <RangePicker />
+          </div>
+          <table className='table table-bordered'>
+              <thead>
+                  <tr>
+                      <th>Image</th>
+                      <th>Banner Title</th>
+                      <th>Purpose</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {
+                      tableData && tableData.map((tbdata,index)=>{
+                          return(
+                              <tr key={index} className='text-center'>
+                                  <td><img src={tbdata.banerimg} width={40}/></td>
+                                  <td>{tbdata.title}</td>
+                                  <td>{tbdata.purpose}</td>
+                                  <td>
+                                      {/* <Switch isOn={switchval} handleToggle={() => setSwitchval(!switchval)}/> */}
+                                      <NewSwitch initialState={isChecked} onChange={handleSwitchChange}/>
+                                  </td>
+                                  <td>
+                                      <Link to="/adminprofile"><img src={viewimg}/></Link>&nbsp;&nbsp;&nbsp;&nbsp;
+                                      <Link to="/editadmin"><img src={editimg}/></Link>&nbsp;&nbsp;&nbsp;&nbsp;
+                                      <button as="button" onClick={handleDelete} style={{background:"none",padding:"0"}}><img src={deleteimg}/></button>
+                                  </td>
+                              </tr>
+                          )
+                      })
+                  }
+              </tbody>
+          </table>
+          <div className='d-flex justify-content-between'>
+              <div>
+                  <p>Showing 1 to 10 500 </p>
+              </div>
+              <div>
+                  <Pagination/>
+              </div>
+              <div>
+                  <select className='cusselect'>
+                      <option value={10}>Show 10</option>
+                      <option value={20}>Show 20</option>
+                      <option value={50}>Show 50</option>
+                      <option value={100}>Show 100</option>
+                  </select>
+              </div>
+          </div>
+          <Footer/>
+        </div>
+      </>
+  )
+}
+
+export default Banners
+
+
+
+.custom-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.switch-checkbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.cswitch-handle {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: background-color 0.4s;
+}
+
+.switch-checkbox:checked + .cswitch-handle::before {
+  background-color: #2196F3; /* Color when switched on */
+  color: blue;
+}
+
+
+.cswitch-handle:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.4s;
+}
+
+/* .cswitch-handle::after {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: rgb(204, 1, 1);
+  border-radius: 50%;
+  transition: transform 0.4s;
+}
+ */
+
+.switch-checkbox:checked + .cswitch-handle:before {
+  transform: translateX(26px);
+}
+
