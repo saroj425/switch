@@ -261,3 +261,63 @@ export default Banners
   transform: translateX(26px);
 }
 
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+const [type, setType] = useState('password');
+  const [icon, setIcon] = useState(eyeOff);
+  const [formdata,setFormdata] = useState({
+    email:"",
+    password:'',
+  });
+ const [errors,setErrors] = useState({})
+  const handleInputChange = (e)=>{
+    const newObj = {...formdata,[e.target.name]:e.target.value}
+    setFormdata(newObj);
+  }
+
+  const navigation  = useNavigate();
+
+  console.log("jkslfjsdf",{apiUrl})
+
+  const handleToggle = ()=>{
+    if (type==='password'){
+      setIcon(eye);
+      setType('text')
+   } else {
+      setIcon(eyeOff)
+      setType('password')
+   }
+  }
+
+  const handleSignin = ()=>{
+    setErrors(Validation(formdata));
+    console.log(errors)
+      // if(!errors.email == "" && !errors.password == ""){
+      //   navigation(`/otpscreen`)
+        
+      // }
+      
+  }
+  
+  
+  
+  export default function Validation (formdata){
+    console.log("Form Data ==",formdata);
+    const errors = {};
+    const email_pattern = /\S+@\S+\.\S+/;
+
+    if(formdata.email==="" && !email_pattern.test(formdata.email)){
+        errors.email = "Email is required"
+    }
+    if(formdata.password ===""){
+        errors.password = "Password required"
+    }
+
+    return errors;
+}
+
